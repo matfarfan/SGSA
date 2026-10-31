@@ -22,18 +22,7 @@ public class Main {
 
         while (opcion != 0) {
 
-            System.out.println("\n====================================");
-            System.out.println(" SISTEMA DE SOLICITUDES ACADEMICAS");
-            System.out.println("====================================");
-            System.out.println("1. Registrar solicitud");
-            System.out.println("2. Listar solicitudes");
-            System.out.println("3. Buscar solicitud por ID");
-            System.out.println("4. Filtrar solicitudes por estado");
-            System.out.println("5. Asignar responsable");
-            System.out.println("6. Cambiar estado");
-            System.out.println("7. Generar reporte");
-            System.out.println("0. Salir");
-            System.out.print("Seleccione una opcion: ");
+            mostrarMenu();
 
             if (!scanner.hasNextInt()) {
                 System.out.println("Debe ingresar un numero.");
@@ -47,30 +36,7 @@ public class Main {
             switch (opcion) {
 
                 case 1:
-                    System.out.print("Ingrese ID de solicitud: ");
-                    int id = scanner.nextInt();
-                    scanner.nextLine();
-
-                    System.out.println("Seleccione estudiante:");
-                    System.out.println("1. Ana Garcia");
-                    System.out.println("2. Lucas Perez");
-                    int estudianteElegido = scanner.nextInt();
-                    scanner.nextLine();
-
-                    Estudiante estudiante =
-                            estudianteElegido == 1 ? estudiante1 : estudiante2;
-
-                    System.out.print("Ingrese tipo de solicitud: ");
-                    String tipo = scanner.nextLine();
-
-                    System.out.print("Ingrese prioridad (Alta/Media/Baja): ");
-                    String prioridad = scanner.nextLine();
-
-                    Solicitud nuevaSolicitud = new Solicitud(
-                            id, estudiante, tipo, prioridad, "Pendiente"
-                    );
-
-                    sistema.registrarSolicitud(nuevaSolicitud);
+                    registarSolicitud(scanner, estudiante1, estudiante2, sistema);
                     break;
 
                 case 2:
@@ -78,55 +44,19 @@ public class Main {
                     break;
 
                 case 3:
-                    System.out.print("Ingrese ID de solicitud: ");
-                    int idBuscar = scanner.nextInt();
-                    scanner.nextLine();
-
-                    Solicitud encontrada =
-                            sistema.buscarSolicitudPorId(idBuscar);
-
-                    if (encontrada != null) {
-                        sistema.mostrarSolicitud(encontrada);
-                    } else {
-                        System.out.println("Solicitud no encontrada.");
-                    }
+                    buscarSolicitud(scanner, sistema);
                     break;
 
                 case 4:
-                    System.out.print("Ingrese estado a buscar: ");
-                    String estadoBuscar = scanner.nextLine();
-                    sistema.listarPorEstado(estadoBuscar);
+                    filtrarSolicitudesPorEstado(scanner, sistema);
                     break;
 
                 case 5:
-                    System.out.print("Ingrese ID de solicitud: ");
-                    int idAsignar = scanner.nextInt();
-                    scanner.nextLine();
-
-                    System.out.println("Seleccione responsable:");
-                    System.out.println("1. Maria Lopez");
-                    System.out.println("2. Carlos Ruiz");
-                    int responsableElegido = scanner.nextInt();
-                    scanner.nextLine();
-
-                    Responsable responsable =
-                            responsableElegido == 1
-                                    ? responsable1 : responsable2;
-
-                    sistema.asignarResponsable(idAsignar, responsable);
+                    asignarResponsable(scanner, responsable1, responsable2, sistema);
                     break;
 
                 case 6:
-                    System.out.print("Ingrese ID de solicitud: ");
-                    int idEstado = scanner.nextInt();
-                    scanner.nextLine();
-
-                    System.out.print(
-                            "Ingrese nuevo estado (Pendiente/En proceso/Finalizada): "
-                    );
-                    String nuevoEstado = scanner.nextLine();
-
-                    sistema.cambiarEstado(idEstado, nuevoEstado);
+                    cambiarEstado(scanner, sistema);
                     break;
 
                 case 7:
@@ -143,5 +73,99 @@ public class Main {
         }
 
         scanner.close();
+    }
+
+    private static void cambiarEstado(Scanner scanner, SistemaSolicitudes sistema) {
+        System.out.print("Ingrese ID de solicitud: ");
+        int idEstado = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print(
+                "Ingrese nuevo estado (Pendiente/En proceso/Finalizada): "
+        );
+        String nuevoEstado = scanner.nextLine();
+
+        sistema.cambiarEstado(idEstado, nuevoEstado);
+    }
+
+    private static void asignarResponsable(Scanner scanner, Responsable responsable1, Responsable responsable2, SistemaSolicitudes sistema) {
+        System.out.print("Ingrese ID de solicitud: ");
+        int idAsignar = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Seleccione responsable:");
+        System.out.println("1. Maria Lopez");
+        System.out.println("2. Carlos Ruiz");
+        int responsableElegido = scanner.nextInt();
+        scanner.nextLine();
+
+        Responsable responsable =
+                responsableElegido == 1
+                        ? responsable1 : responsable2;
+
+        sistema.asignarResponsable(idAsignar, responsable);
+    }
+
+    private static void filtrarSolicitudesPorEstado(Scanner scanner, SistemaSolicitudes sistema) {
+        System.out.print("Ingrese estado a buscar: ");
+        String estadoBuscar = scanner.nextLine();
+        sistema.listarPorEstado(estadoBuscar);
+    }
+
+    private static void buscarSolicitud(Scanner scanner, SistemaSolicitudes sistema) {
+        System.out.print("Ingrese ID de solicitud: ");
+        int idBuscar = scanner.nextInt();
+        scanner.nextLine();
+
+        Solicitud encontrada =
+                sistema.buscarSolicitudPorId(idBuscar);
+
+        if (encontrada != null) {
+            sistema.mostrarSolicitud(encontrada);
+        } else {
+            System.out.println("Solicitud no encontrada.");
+        }
+    }
+
+    private static void registarSolicitud(Scanner scanner, Estudiante estudiante1, Estudiante estudiante2, SistemaSolicitudes sistema) {
+        System.out.print("Ingrese ID de solicitud: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Seleccione estudiante:");
+        System.out.println("1. Ana Garcia");
+        System.out.println("2. Lucas Perez");
+        int estudianteElegido = scanner.nextInt();
+        scanner.nextLine();
+
+        Estudiante estudiante =
+                estudianteElegido == 1 ? estudiante1 : estudiante2;
+
+        System.out.print("Ingrese tipo de solicitud: ");
+        String tipo = scanner.nextLine();
+
+        System.out.print("Ingrese prioridad (Alta/Media/Baja): ");
+        String prioridad = scanner.nextLine();
+
+        Solicitud nuevaSolicitud = new Solicitud(
+                id, estudiante, tipo, prioridad, "Pendiente"
+        );
+
+        sistema.registrarSolicitud(nuevaSolicitud);
+    }
+
+    private static void mostrarMenu() {
+        System.out.println("\n====================================");
+        System.out.println(" SISTEMA DE SOLICITUDES ACADEMICAS");
+        System.out.println("====================================");
+        System.out.println("1. Registrar solicitud");
+        System.out.println("2. Listar solicitudes");
+        System.out.println("3. Buscar solicitud por ID");
+        System.out.println("4. Filtrar solicitudes por estado");
+        System.out.println("5. Asignar responsable");
+        System.out.println("6. Cambiar estado");
+        System.out.println("7. Generar reporte");
+        System.out.println("0. Salir");
+        System.out.print("Seleccione una opcion: ");
     }
 }
