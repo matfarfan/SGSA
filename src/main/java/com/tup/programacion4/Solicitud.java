@@ -5,7 +5,7 @@ public class Solicitud {
     private Estudiante estudiante;
     private String tipo;
     private String prioridad;
-    private String estado;
+    private EstadoSolicitud estado;
     private Responsable responsable;
 
 
@@ -14,7 +14,7 @@ public class Solicitud {
         this.estudiante = datos.getEstudiante();
         this.tipo = datos.getTipo();
         this.prioridad = datos.getPrioridad();
-        this.estado = datos.getEstado();
+        this.setEstado(datos.getEstado());
         this.responsable = null;
     }
 
@@ -42,7 +42,7 @@ public class Solicitud {
     }
 
     public String getEstado() {
-        return estado;
+        return estado.getDescripcion();
     }
 
     public Responsable getResponsable() {
@@ -50,7 +50,13 @@ public class Solicitud {
     }
 
     public void setEstado(String estado) {
-        this.estado = estado;
+        for (EstadoSolicitud valor : EstadoSolicitud.values()) {
+            if (valor.getDescripcion().equalsIgnoreCase(estado)) {
+                this.estado = valor;
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Estado no válido: " + estado);
     }
 
     public void setResponsable(Responsable responsable) {

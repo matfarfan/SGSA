@@ -219,3 +219,91 @@ Además, se mantuvo el constructor original para conservar la compatibilidad con
 
 El refactoring mejoró la organización y mantenibilidad del código, sin introducir cambios en el comportamiento evaluado mediante las 14 pruebas de regresión.
 
+## 4. Refactoring 4 — Replace String with Enum
+
+### 4.1. Situación inicial
+
+La clase `Solicitud.java` representaba el estado de cada solicitud mediante un atributo de tipo `String`.
+
+Los estados utilizados por el sistema eran `Pendiente`, `En proceso` y `Finalizada`. Sin embargo, al utilizar cadenas de texto, no existía una restricción que impidiera asignar valores diferentes o incorrectos.
+
+Esta situación representaba una debilidad en la validación de los datos y podía generar inconsistencias en el manejo de los estados.
+
+### 4.2. Técnica aplicada
+
+Se aplicó la técnica **Replace String with Enum**, reemplazando la representación interna del estado por un tipo enumerado.
+
+Se creó la clase enumerada `EstadoSolicitud.java`, que define tres valores:
+
+- `PENDIENTE`
+- `EN_PROCESO`
+- `FINALIZADA`
+
+Cada valor contiene una descripción textual que permite conservar los nombres utilizados originalmente por el sistema.
+
+### 4.3. Modificaciones realizadas
+
+Se realizaron los siguientes cambios:
+
+- Se creó `EstadoSolicitud.java` para centralizar los estados permitidos.
+- Se modificó el atributo `estado` de `Solicitud.java` para utilizar el tipo `EstadoSolicitud`.
+- Se adaptó el constructor de `Solicitud` para convertir el estado recibido como texto al valor enumerado correspondiente.
+- Se conservó el método `getEstado()` con retorno `String`, utilizando la descripción del estado para mantener la compatibilidad.
+- Se modificó `setEstado(String estado)` para validar el valor recibido y lanzar una excepción `IllegalArgumentException` cuando no corresponde a un estado permitido.
+- Se incorporó en `Main.java` un bloque `try-catch` para informar al usuario cuando ingresa un estado incorrecto, sin interrumpir la ejecución del programa.
+
+### 4.4. Relación con SOLID y Clean Code
+
+La utilización de un tipo enumerado mejora la claridad del código, ya que los estados válidos quedan definidos explícitamente.
+
+También reduce la utilización de cadenas de texto dispersas y centraliza la representación de los estados.
+
+Esta modificación favorece la mantenibilidad, la consistencia de los datos y la prevención de errores.
+
+### 4.5. Verificación
+
+Después de aplicar las modificaciones, se ejecutó:
+
+`.\gradlew.bat clean test`
+
+**Resultados obtenidos:**
+
+- Pruebas ejecutadas: 14.
+- Pruebas aprobadas: 14.
+- Pruebas fallidas: 0.
+- Pruebas omitidas: 0.
+- Porcentaje de éxito: 100 %.
+- Resultado de Gradle: `BUILD SUCCESSFUL`.
+
+Se utilizaron las mismas pruebas de regresión ejecutadas antes de los refactorings, sin modificar sus casos de prueba.
+
+Adicionalmente, se realizó una prueba funcional manual:
+
+1. Se registró una solicitud con ID `100`.
+2. Se seleccionó la opción de cambio de estado.
+3. Se ingresó el valor no permitido `cancelada`.
+4. El sistema mostró el mensaje: `Estado no válido. Ingrese Pendiente, En proceso o Finalizada.`
+5. El menú volvió a aparecer y el programa continuó funcionando.
+
+Esta prueba permitió verificar el manejo de un estado incorrecto desde la interfaz de consola.
+
+### 4.6. Evidencias
+
+Las capturas se encuentran en:
+
+`docs/evidencias/refactoring-4/`
+
+Incluyen el estado inicial de `Solicitud.java`, la creación de `EstadoSolicitud.java`, la modificación de la representación interna del estado, la ejecución exitosa de Gradle, el informe de JUnit y la validación manual de un estado incorrecto.
+
+Entre las evidencias se destacan:
+
+- `07-main-validacion-despues.png`: manejo de excepciones en `Main.java`.
+- `08-validacion-estado-invalido.png`: comprobación funcional de la validación desde consola.
+
+### 4.7. Conclusión
+
+La aplicación de **Replace String with Enum** permitió restringir los estados de las solicitudes a un conjunto definido de valores, mejorar la consistencia de la información y prevenir estados incorrectos.
+
+Se conservaron las interfaces de acceso utilizadas por las pruebas existentes, y las 14 pruebas de regresión finalizaron satisfactoriamente.
+
+Además, se verificó manualmente que el sistema informa los errores de estado y continúa funcionando sin interrupciones.

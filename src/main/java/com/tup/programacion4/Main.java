@@ -85,7 +85,13 @@ public class Main {
         );
         String nuevoEstado = scanner.nextLine();
 
-        sistema.cambiarEstado(idEstado, nuevoEstado);
+        try {
+            sistema.cambiarEstado(idEstado, nuevoEstado);
+        } catch (IllegalArgumentException e) {
+            System.out.println(
+                    "Estado no válido. Ingrese Pendiente, En proceso o Finalizada."
+            );
+        }
     }
 
     private static void asignarResponsable(Scanner scanner, Responsable responsable1, Responsable responsable2, SistemaSolicitudes sistema) {
