@@ -147,9 +147,11 @@ public class Main {
         System.out.print("Ingrese prioridad (Alta/Media/Baja): ");
         String prioridad = scanner.nextLine();
 
-        Solicitud nuevaSolicitud = new Solicitud(
+        DatosSolicitud datos = new DatosSolicitud(
                 id, estudiante, tipo, prioridad, "Pendiente"
         );
+
+        Solicitud nuevaSolicitud = new Solicitud(datos);
 
         sistema.registrarSolicitud(nuevaSolicitud);
     }

@@ -8,15 +8,22 @@ public class Solicitud {
     private String estado;
     private Responsable responsable;
 
-    public Solicitud(int id, Estudiante estudiante, String tipo,
-                     String prioridad, String estado) {
-        this.id = id;
-        this.estudiante = estudiante;
-        this.tipo = tipo;
-        this.prioridad = prioridad;
-        this.estado = estado;
+
+    public Solicitud(DatosSolicitud datos) {
+        this.id = datos.getId();
+        this.estudiante = datos.getEstudiante();
+        this.tipo = datos.getTipo();
+        this.prioridad = datos.getPrioridad();
+        this.estado = datos.getEstado();
         this.responsable = null;
     }
+
+    // Constructor original conservado por compatibilidad
+    public Solicitud(int id, Estudiante estudiante, String tipo,
+                     String prioridad, String estado) {
+        this(new DatosSolicitud(id, estudiante, tipo, prioridad, estado));
+    }
+
 
     public int getId() {
         return id;
