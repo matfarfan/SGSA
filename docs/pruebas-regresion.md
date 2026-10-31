@@ -6,7 +6,7 @@
 
 El objetivo de las pruebas de regresión es verificar que el Sistema de Gestión de Solicitudes Académicas (SGSA) conserve sus funcionalidades después de aplicar las técnicas de refactoring planificadas.
 
-Para ello, se definió una batería de 14 pruebas automatizadas sobre la versión inicial del sistema. Esta misma batería se ejecutará nuevamente después de las modificaciones para comparar los resultados.
+Para ello, se definió una batería de 14 pruebas automatizadas sobre la versión inicial del sistema. Esta misma batería se ejecutó nuevamente después de las modificaciones para comparar los resultados.
 
 ### 2. Entorno de pruebas
 
@@ -68,16 +68,78 @@ Archivos:
 
 ### 6. Estrategia de comparación
 
-Después de aplicar los cuatro refactorings, se volverá a ejecutar la misma batería de pruebas, sin modificar sus verificaciones originales.
+Después de aplicar los cuatro refactorings, se volvió a ejecutar la misma batería de pruebas, sin modificar sus verificaciones originales.
 
-Se compararán la cantidad de pruebas ejecutadas, los resultados obtenidos y la presencia de posibles regresiones.
+Se compaparon la cantidad de pruebas ejecutadas, los resultados obtenidos y la presencia de posibles regresiones.
 
 ### 7. Resultados después del refactoring
 
-*Pendiente de completar una vez finalizadas las modificaciones.*
+**Fecha de ejecución:** 31 de octubre de 2026.
 
-### 8. Conclusión preliminar
+Una vez implementados los cuatro refactorings —Extract Method, Move Method, Introduce Parameter Object y Replace String with Enum— se ejecutó nuevamente la batería original de pruebas automatizadas.
 
-La ejecución inicial permitió establecer una línea base de regresión para el SGSA.
+**Comando utilizado:**
 
-Los resultados obtenidos servirán como referencia para verificar que las mejoras estructurales realizadas mediante refactoring conserven el comportamiento previamente comprobado.
+`.\gradlew.bat clean test`
+
+**Resultados obtenidos:**
+
+- Pruebas ejecutadas: 14.
+- Pruebas aprobadas: 14.
+- Pruebas fallidas: 0.
+- Pruebas omitidas: 0.
+- Porcentaje de éxito: 100 %.
+- Resultado de Gradle: `BUILD SUCCESSFUL`.
+
+Se mantuvo la misma clase `SistemaSolicitudesTest.java`, sin modificar los casos de prueba originales.
+
+#### 7.1. Comparación de resultados
+
+| Indicador | Antes del refactoring | Después del refactoring |
+|---|---|---|
+| Pruebas ejecutadas | 14 | 14 |
+| Pruebas aprobadas | 14 | 14 |
+| Pruebas fallidas | 0 | 0 |
+| Pruebas omitidas | 0 | 0 |
+| Porcentaje de éxito | 100 % | 100 % |
+| Resultado de Gradle | BUILD SUCCESSFUL | BUILD SUCCESSFUL |
+
+La comparación muestra que los 14 casos de prueba conservaron sus resultados satisfactorios después de aplicar las modificaciones.
+
+#### 7.2. Prueba funcional complementaria
+
+Además de las pruebas automatizadas, se realizó una verificación manual del manejo de estados incorrectos.
+
+Se registró una solicitud con ID `100` y posteriormente se intentó cambiar su estado al valor no permitido `cancelada`.
+
+El sistema mostró el mensaje:
+
+`Estado no válido. Ingrese Pendiente, En proceso o Finalizada.`
+
+Después de informar el error, el menú volvió a mostrarse y el programa continuó funcionando.
+
+Esta verificación permitió comprobar el manejo de errores incorporado durante el cuarto refactoring.
+
+#### 7.3. Evidencias posteriores
+
+Las capturas de las pruebas realizadas después de las modificaciones se encuentran en:
+
+- `docs/evidencias/refactoring-4/04-gradle-build-successful.png`
+- `docs/evidencias/refactoring-4/05-junit-14-pruebas-despues.png`
+- `docs/evidencias/refactoring-4/08-validacion-estado-invalido.png`
+
+Estas evidencias complementan las capturas iniciales y permiten documentar la comparación antes y después del refactoring.
+
+### 8. Conclusión final
+
+Las pruebas de regresión permitieron comparar el comportamiento del SGSA antes y después de aplicar cuatro técnicas de refactoring.
+
+En ambas versiones se ejecutaron los mismos 14 casos de prueba automatizados, obteniéndose un porcentaje de aprobación del 100 %, sin fallos ni pruebas omitidas.
+
+Estos resultados indican que las modificaciones estructurales conservaron el comportamiento esperado de las funcionalidades cubiertas por las pruebas.
+
+Adicionalmente, la verificación manual del ingreso de un estado incorrecto permitió comprobar que el sistema informa el error y continúa funcionando.
+
+Si bien las pruebas realizadas no garantizan la ausencia absoluta de defectos, proporcionan evidencia de que las mejoras de organización, separación de responsabilidades y validación de estados no introdujeron regresiones detectables en los escenarios evaluados.
+
+Por lo tanto, se considera satisfactorio el resultado de la etapa de pruebas de regresión del SGSA.
